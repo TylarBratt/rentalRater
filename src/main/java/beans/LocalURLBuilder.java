@@ -68,7 +68,8 @@ public class LocalURLBuilder {
 				paramText.append(formattedValue);
 			}
 		}
-		System.out.println("Param url: "+paramText.toString());
+		System.out.println(request.getContextPath().toString());
+		System.out.println("Param url: "+ path + paramText.toString());
 		return request.getContextPath()+"/"+path+paramText.toString();
 	}
 }

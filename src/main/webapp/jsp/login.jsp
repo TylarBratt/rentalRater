@@ -8,7 +8,7 @@
 <html>
 	<head>
 	<meta charset="ISO-8859-1">
-		<title>Login - FleaBay</title>
+		<title>Login - Rental Rater</title>
 		</head>
 	<body>
 	

@@ -23,6 +23,10 @@ import beans.navbar.Navbar;
  *
  */
 public abstract class BaseServlet extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final boolean isUsingDatabase;
 	Database database = null; //Only initialized if isUsingDatabase is true.
 	
