@@ -50,7 +50,7 @@ public class LoginController extends JSPController {
 					session.setAttribute("user", user.id);
 					
 					//Redirect to the home page.
-					resp.sendRedirect(new LocalURLBuilder("own-user", req).toString());
+					resp.sendRedirect(new LocalURLBuilder("home", req).toString());
 					return;
 				} else {
 					//Add an error msg

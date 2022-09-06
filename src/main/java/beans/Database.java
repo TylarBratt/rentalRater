@@ -105,4 +105,53 @@ public class Database {
 		}
 
 	}
+	
+	public List<Post> getPosts(long userID) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM post");
+		ResultSet result = statement.executeQuery();
+		List<Post> posts = new ArrayList<>();
+		while(result.next()) {
+			Post post = new Post(result);
+			posts.add(post);
+		}
+		
+		return posts;
+		
+		
+		
+		
+		
+	}
+
+	public List<String> getComments(long getid) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM comments WHERE ratingID = " + getid);
+		ResultSet result = statement.executeQuery();
+		List<String> comments = new ArrayList<>();
+		while(result.next()) {
+			if(result.getString("visibility") != "hidden" || result.getString("visibility") != "invisible")
+			comments.add(result.getString("comment"));
+		}
+		return comments;
+	}
+
+	public void addComment(int userid, String postid, String comment) {
+		PreparedStatement statement = connection.prepareStatement("SELECT MAX(id) FROM comments");
+		ResultSet result1 = statement.executeQuery();
+		result1.next();
+		int maxID = result1.getInt(0);
+		maxID++;
+		result1.close();
+		statement = connection.prepareStatement("INSERT INTO comments VALUES(" + maxID + ", " + postid + ", " + userid + ", " + comment + ", " + visibility + ")");
+		statement.execute();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
