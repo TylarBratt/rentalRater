@@ -8,6 +8,7 @@
 <!-- Initialize Data -->
 <%List<Post> posts = (List<Post>)request.getAttribute("posts"); %>
 
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,9 +32,12 @@
 		if (posts.size() > 0) {
 			for (int postIndex = 0; postIndex < posts.size(); postIndex++) {
 			Post post = posts.get(postIndex);
-			if (post.getVisibility() != "Hidden" || post.getVisibility() != "Invisibile"){%>
+			if (post.getVisibility() != "Hidden" || post.getVisibility() != "Invisibile"){
+			
+			%>
 				<jsp:include page="post.jsp">  
-					<jsp:param name="id" value='<%= postIndex %>' />  
+					<jsp:param name="id" value='<%= postIndex %>' /> 
+					<jsp:param name="Name"  value='<% %>'/>
 				</jsp:include>  
 			<% }
 		}}

@@ -11,6 +11,7 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 		<title>My Account - Rental Rater</title>
 	</head>
 	<body>

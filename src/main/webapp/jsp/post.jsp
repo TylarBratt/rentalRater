@@ -26,18 +26,24 @@ total = comments.size();
 
 
 <div class="post">
-		<h3>Property Owner: </h3>
-	<h3 class="post-owner"><%= post.getOwnerID() %></h3>
-		<h3>Property Renter: </h3>
-	<h3 class="post-renter"><%= post.getRenterID() %></h3>
+<div id="intro">
+		<h3>Property Owner: <%= post.getOwnerName() %></h3>
+		<h3>Property Renter: <%= post.getRenterName( )%></h3>
 	
+	</div>
+<div id="intro_image">
 	<form action="post-details" method="get">
-	<input class="post-image" type="image" id="image" src='images?src='/>
+	<input class="post-image" type="image" id="image" src="images/details.png"/>
 	<input type="hidden" name="aid" value=<%= post.getid() %> />
 	</form>
+	</div>
+	
 	
 	<!-- Auction details -->
+
+	<div id="body">
 	<form method=post>
+	
 		<h4>Date: </h4>
 		<h5><%= post.getDate() %></h5>
 	
@@ -60,4 +66,5 @@ total = comments.size();
 	
 	</form>
 	
+</div>
 </div>

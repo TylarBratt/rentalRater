@@ -1,8 +1,9 @@
 package beans;
 
-import java.sql.Date;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.List;
 
 public class Post {
@@ -10,9 +11,13 @@ public class Post {
 
 	public final long id;
 	public final long renterID;
+	public String renterName;
 	public long ownerID;
-	public Date date;
+	public String ownerName;
+	public String date;
 	public long rating;
+	
+
 	public String desc;
 	public String visibility;
 	public List<String> comments;
@@ -20,9 +25,11 @@ public class Post {
 	
 	public Post(ResultSet data) throws SQLException {
 		this.id = data.getLong("ratingid");
-		this.renterID = data.getLong("renterID");
+		this.renterID = data.getLong("renterID"); 
+		this.renterName = data.getString("renterFirstName") + " " + data.getString("renterLastName");
 		this.ownerID = data.getLong("ownerid");
-		this.date = data.getDate("date");
+		this.ownerName = data.getString("ownerFirstName") +  " " + data.getString("ownerLastName");
+		this.date = data.getString("date");
 		this.rating = data.getLong("rating");
 		this.desc = data.getString("description");
 		this.visibility = data.getString("visibility");
@@ -47,11 +54,11 @@ public class Post {
 		this.ownerID = ownerID;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -87,6 +94,24 @@ public class Post {
 		return renterID;
 	}
 	
+	public String getRenterName() {
+		return renterName;
+	}
+
+
+	public void setRenterName(String renterName) {
+		this.renterName = renterName;
+	}
+
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
 	/*public String getMaskedUserName() {
 		char first = userName.charAt(0);
 		char last = userName.charAt(userName.length()-1);

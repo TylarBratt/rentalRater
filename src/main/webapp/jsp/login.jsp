@@ -8,6 +8,7 @@
 <html>
 	<head>
 	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 		<title>Login - Rental Rater</title>
 		</head>
 	<body>
@@ -18,9 +19,9 @@
 		</jsp:include>  
 		
 		<h1>Welcome to Rental Rater</h1>
-		<h3>Where you or your landlord can keep a track record.</h3>
+		<h3>Where you and your landlord can keep a track record.</h3>
 		
-		<% String errorMsg = (String)request.getAttribute("err"); %>
+		<% String errorMsg = (String)request.getAttribute("fail"); %>
 		<form method="post">
 			<label>Username:</label><br>
 			<input type="text" name="username" id="title" size=20 maxlength=60><br>

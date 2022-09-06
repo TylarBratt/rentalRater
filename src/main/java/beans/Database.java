@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -107,7 +108,14 @@ public class Database {
 	}
 	
 	public List<Post> getPosts(long userID) throws SQLException {
-		PreparedStatement statement = connection.prepareStatement("SELECT * FROM post");
+		PreparedStatement statement = connection.prepareStatement(
+				"SELECT ratingid, renterid, ownerid, date, post.rating, 'description', visibility, "
+				+ "a.id as renterid, a.firstName as renterfirstName, a.lastname as renterlastName, "
+				+ "b.id as ownerid, b.firstName as ownerfirstname, b.lastName as ownerlastname "
+				+ "FROM post LEFT JOIN oop_capstone.user a ON post.renterid = a.id LEFT JOIN oop_capstone.user b ON post.ownerid = b.id WHERE renterid = 1 OR ownerid = 1"
+				
+				//"SELECT * FROM post LEFT JOIN user ON post.renterid = user.id LEFT JOIN user on post.ownerid = user.id WHERE renterid = " + userID + " OR ownerid = " + userID
+				 );
 		ResultSet result = statement.executeQuery();
 		List<Post> posts = new ArrayList<>();
 		while(result.next()) {
@@ -116,10 +124,7 @@ public class Database {
 		}
 		
 		return posts;
-		
-		
-		
-		
+
 		
 	}
 
@@ -134,19 +139,35 @@ public class Database {
 		return comments;
 	}
 
-	public void addComment(int userid, String postid, String comment) {
+	public void addComment(int userid, String postid, String comment) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement("SELECT MAX(id) FROM comments");
 		ResultSet result1 = statement.executeQuery();
 		result1.next();
-		int maxID = result1.getInt(0);
+		int maxID = result1.getInt(1);
 		maxID++;
 		result1.close();
-		statement = connection.prepareStatement("INSERT INTO comments VALUES(" + maxID + ", " + postid + ", " + userid + ", " + comment + ", " + visibility + ")");
+		statement = connection.prepareStatement("INSERT INTO comments VALUES(" + maxID + ", " + postid + ", " + userid + ", " + comment + ", " + "visible)");
 		statement.execute();
 	}
 	
 	
-	
+	public int getHighestID() throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT MAX(id) FROM oop_capstone.user");
+		ResultSet rs = statement.executeQuery();
+		rs.next();
+		int highest = rs.getInt(1);
+		rs.close();
+		return highest;
+	}
+
+	public void createAccount(User user) throws SQLException {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String date = format.format(user.dob);
+		PreparedStatement statement = connection.prepareStatement("INSERT INTO oop_capstone.user (id, username, password, firstname, lastname, dateofbirth, status) VALUES ( " + user.id + ", '" + user.userName + "', '" + user.password + "', '" 
+				+ user.firstname + "', '" + user.lastname + "', '" + date + "', '" + user.status + "')");
+		statement.execute();
+		
+	}
 	
 	
 	
