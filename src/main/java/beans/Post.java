@@ -19,9 +19,9 @@ public class Post {
 	
 	
 	public Post(ResultSet data) throws SQLException {
-		this.id = data.getLong("id");
+		this.id = data.getLong("ratingid");
 		this.renterID = data.getLong("renterID");
-		this.ownerID = data.getLong("ownerID");
+		this.ownerID = data.getLong("ownerid");
 		this.date = data.getDate("date");
 		this.rating = data.getLong("rating");
 		this.desc = data.getString("description");

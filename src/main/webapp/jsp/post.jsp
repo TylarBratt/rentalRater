@@ -8,11 +8,20 @@
 <!-- Initialize Data -->
 <%List<Post> posts = (List<Post>)request.getAttribute("posts"); 
 
-int userID = (int) request.getAttribute("userID");
-int index = (int) request.getAttribute("id");
+Long userID = (Long) request.getAttribute("userID");
+
+
+Long mid = Long.valueOf(request.getParameter("id"));
+int index = mid.intValue();
+
 Post post = posts.get(index);
-List<String> comments = post.getComments();
-int total = comments.size();
+List<String> comments;
+int total = 0;
+
+if (post.getComments() != null){
+comments = post.getComments();
+total = comments.size();
+}
 %>
 
 
