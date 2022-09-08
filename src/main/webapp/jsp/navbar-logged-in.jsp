@@ -37,6 +37,6 @@ public String addItem(String title, String path, boolean isFloatingRight){
 
 <ul class="navbar">
 	<%= addItem("Home", "home", false) %>
-	<%= addItem("Account", "own-user", false) %>
+	<%= addItem("Account", "AccountController", false) %>
 	<%= addItem("Logout", "logout", true) %>
 </ul>

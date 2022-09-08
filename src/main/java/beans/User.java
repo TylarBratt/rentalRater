@@ -13,6 +13,8 @@ public class User {
 	public String lastname;
 	public Date dob;
 	public int status;
+	public int rating;
+	
 
 
 	public User(ResultSet data) throws SQLException {
@@ -41,4 +43,53 @@ public class User {
 		char last = userName.charAt(userName.length()-1);
 		return first + "******" + last;
 	}
+	
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
 }

@@ -25,7 +25,7 @@ public class Post {
 	
 	public Post(ResultSet data) throws SQLException {
 		this.id = data.getLong("ratingid");
-		this.renterID = data.getLong("renterID"); 
+		this.renterID = data.getLong("renterid"); 
 		this.renterName = data.getString("renterFirstName") + " " + data.getString("renterLastName");
 		this.ownerID = data.getLong("ownerid");
 		this.ownerName = data.getString("ownerFirstName") +  " " + data.getString("ownerLastName");

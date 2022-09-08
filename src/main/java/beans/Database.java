@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class Database {
 			PreparedStatement statement = connection.prepareStatement("CALL insert_user(?,?,?,?);");
 			statement.setString(1, userName);
 			statement.setString(2, password);
-			statement.setString(4, User.Role.USER.name());
+		
 			ResultSet results = statement.executeQuery();
 			return login(userName, password);
 		} catch (SQLException e) {
@@ -128,13 +129,22 @@ public class Database {
 		
 	}
 
+	public Post getPost(long postid) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT ratingid, post.renterid, b.firstname as renterFirstName, b.lastname as renterLastName,"
+				+ " ownerid, a.firstname as ownerFirstName, a.lastname as ownerLastName, post.date, post.rating, post.description, post.visibility FROM post LEFT JOIN user a ON post.ownerid = a.id LEFT JOIN user b ON post.renterid = b.id WHERE ratingid = " + postid);
+		ResultSet rs = statement.executeQuery();
+		rs.next();
+		Post post = new Post(rs);
+		return post;
+	}
 	public List<String> getComments(long getid) throws SQLException {
-		PreparedStatement statement = connection.prepareStatement("SELECT * FROM comments WHERE ratingID = " + getid);
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM comments WHERE id = " + getid);
 		ResultSet result = statement.executeQuery();
 		List<String> comments = new ArrayList<>();
 		while(result.next()) {
 			if(result.getString("visibility") != "hidden" || result.getString("visibility") != "invisible")
-			comments.add(result.getString("comment"));
+				comments.add(result.getString("userid"));
+				comments.add(result.getString("comment"));
 		}
 		return comments;
 	}
@@ -168,7 +178,63 @@ public class Database {
 		statement.execute();
 		
 	}
+	public User getUser(Long userid) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM oop_capstone.user WHERE id = " + userid);
+		ResultSet rs = statement.executeQuery();
+		rs.next();
+		User user = new User(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getInt(7));
+		rs.close();
+		return user;
 	
+	}
+
+	public void editUser(Long userID, String username, String firstname, String lastname, Date dob, String owner) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT * FROM user WHERE id = " + userID);
+		ResultSet rs = statement.executeQuery();
+		rs.next();
+		StringBuilder builder = new StringBuilder();
+		builder.append("UPDATE user SET ");
+		Boolean changed = false;
+		
+		if(username != "" && username != rs.getString("username")) {
+			builder.append("username = '" + username + "'");
+			changed = true;
+		}
+		if(firstname != "" && firstname != rs.getString("firstname")) {
+			if(changed == true) {
+				builder.append(", ");
+			}
+			builder.append("firstname = '" + firstname + "'");
+			changed = true;
+		}
+		if(lastname != "" && lastname != rs.getString("lastname")) {
+			if(changed == true) {
+				builder.append(", ");
+			}
+			builder.append("lastname = '" + lastname + "'");
+			changed = true;
+		}
+		if(dob != null && dob != rs.getDate("dateofbirth")) {
+			if(changed == true) {
+				builder.append(", ");
+			}
+			builder.append("dateofbirth ='" + dob + "'");
+			changed = true;
+		}
+		if(owner != "" && owner != rs.getString("owner")) {
+			if(changed == true) {
+				builder.append(", ");
+			}
+			builder.append("owner = '" + owner + "'");
+			changed = true;
+		}
+		builder.append(" WHERE id = " + userID);
+		if (changed == true) {
+			PreparedStatement statement2 = connection.prepareStatement(builder.toString());
+			statement2.execute();
+			}
+	
+	}
 	
 	
 	

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Database;
-import beans.HTMLAdapter;
 import beans.navbar.LoggedInNavbar;
 import beans.navbar.Navbar;
 

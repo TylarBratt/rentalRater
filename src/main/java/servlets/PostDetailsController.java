@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,12 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Post;
-import beans.User;
 
 
-@WebServlet("/home")
+@WebServlet("/post-details")
 
-public class HomeController extends JSPController {
+public class PostDetailsController extends JSPController {
 
 
 
@@ -26,8 +24,8 @@ public class HomeController extends JSPController {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public HomeController() {
-		super("home.jsp", true, true);
+	public PostDetailsController() {
+		super("post-details.jsp", true, true);
 	}
 	
 
@@ -43,16 +41,6 @@ public class HomeController extends JSPController {
 	        		throw new RuntimeException("Post request recieved with no action parameter specified.");
 	        	else if (postAction.equals("Submit")) {
 	        		
-	        		String comment = req.getParameter("newComment");
-	        		String ratingid = req.getParameter("postID");
-	        		String userid = req.getParameter("userID");
-	        		int userid2 = Integer.valueOf(userid);
-	        		try {
-						database.addComment(userid2, ratingid, comment);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 	        	}
 	        		
 				
@@ -74,33 +62,39 @@ public class HomeController extends JSPController {
 		 * Data must be passed in as an attribute by calling req.setAttribute().
 		 */
 		public void initializeData(HttpServletRequest req) {
-			Long userID = (Long) req.getSession().getAttribute("user");
-			List<Post> posts = new ArrayList<>();
-			
-			User user = null;
-			try {
-				user = database.getUser(userID);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+		String mid = req.getParameter("aid");
+		int id = Integer.valueOf(mid);
+		
+		String test = req.getParameter("uid");
+		Long userid = Long.valueOf(test);
+		
+		
+		
+		
+		
+		Post post = null;
+		try {
+			post = database.getPost(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Long postid = post.getid();
+				
+		req.setAttribute("post", post);
+		
+
+		List<String> comments = null;
+		try {
+			if (database.getComments(postid) != null){
+			comments  = database.getComments(postid);
 			}
-			try {
-				posts = database.getPosts(userID);
-				posts.forEach((n) -> {
-					try {
-						n.setComments(database.getComments(n.getid()));
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			req.setAttribute("userID", userID);
-			req.setAttribute("posts", posts);
-			req.setAttribute("User", user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		req.setAttribute("comments", comments);
+		
 		
 		
 		

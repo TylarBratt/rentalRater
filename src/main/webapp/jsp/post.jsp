@@ -3,7 +3,8 @@
 
 <!-- Import java classes -->
 <%@ page import="java.util.List" 
-	import="beans.Post" %>
+	import="beans.Post" 
+	import="beans.User" %>
 		 
 <!-- Initialize Data -->
 <%List<Post> posts = (List<Post>)request.getAttribute("posts"); 
@@ -15,13 +16,18 @@ Long mid = Long.valueOf(request.getParameter("id"));
 int index = mid.intValue();
 
 Post post = posts.get(index);
-List<String> comments;
-int total = 0;
 
-if (post.getComments() != null){
-comments = post.getComments();
-total = comments.size();
-}
+List<String> comments = post.getComments();
+int total = comments.size() / 2;
+
+User user = (User)request.getAttribute("User");
+
+request.setAttribute("post", post);
+request.setAttribute("comments", comments);
+request.setAttribute("user", user);
+
+Long userid = user.getId();
+
 %>
 
 
@@ -35,6 +41,8 @@ total = comments.size();
 	<form action="post-details" method="get">
 	<input class="post-image" type="image" id="image" src="images/details.png"/>
 	<input type="hidden" name="aid" value=<%= post.getid() %> />
+	<input type="hidden" name="index" value=<%=index %> />
+	<input type="hidden" name="uid" value=<%=userid %> />
 	</form>
 	</div>
 	
